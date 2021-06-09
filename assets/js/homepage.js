@@ -1,5 +1,24 @@
 var repoContainerEl = document.querySelector("#repos-container");
 var repoSearchTerm = document.querySelector("#repo-search-term");
+var userFormEl = document.querySelector("#user-form");
+var nameInputEl = document.querySelector("#username");
+
+var formSubmitHandler = function(event) {
+  // prevent page from refreshing
+  event.preventDefault();
+  
+  // get value from the input element 
+  var username = nameInputEl.value.trim();
+
+  if (username) {
+      getUserRepos(username);
+      nameInputEl.value = '';
+  } else {
+      alert("Please enter a Github username");
+  }
+
+  console.log(event);
+};
 
 var getUserRepos = function(user) {
     //format the github api url
@@ -22,27 +41,7 @@ var getUserRepos = function(user) {
       });
 };
 
-var userFormEl = document.querySelector("#user-form");
-var nameInputEl = document.querySelector("#username");
-
-var formSubmitHandler = function(event) {
-    event.preventDefault();
-    // this will get value from the input element 
-    var username = nameInputEl.value.trim();
-
-    if (username) {
-        getUserRepos(username);
-        nameInputEl.value = '';
-    } else {
-        alert("Please enter a Github username");
-    }
-
-    console.log(event);
-  };
-
-  userFormEl.addEventListener("submit", formSubmitHandler);
-
-  var displayRepos = function(repos, searchTerm) {
+var displayRepos = function(repos, searchTerm) {
      // check if api returned any repos
 if (repos.length === 0) {
     repoContainerEl.textContent = "No repositories found.";
@@ -89,3 +88,6 @@ repoEl.appendChild(statusEl);
       }
 
   };
+
+  //add event listeners to forms
+  userFormEl.addEventListener("submit", formSubmitHandler);
